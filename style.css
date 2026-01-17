@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+.countries {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    padding: 20px;
+}
+
+.country {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.country img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.country p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
