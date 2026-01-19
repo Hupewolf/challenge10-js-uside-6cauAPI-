@@ -12,7 +12,7 @@ body {
 
 .country {
     background: white;
-    border: 1px solid #ddd;
+    border: 1px solid #dddddd;
     padding: 10px;
     text-align: center;
 }
@@ -21,11 +21,37 @@ body {
     width: 100%;
     height: 120px;
     object-fit: cover;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
 }
 
 .country p {
     margin: 0;
     font-size: 14px;
-    color: #555;
+    color: #555555;
+}
+
+#btn {
+    cursor: pointer;
+
+}
+
+#pagination button {
+    margin: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+#pagination button:hover {
+    background: #9c9c9c;
+}
+
+#pagination .active {
+    background: #333333;
+    color: white;
+}
+
+.hidden {
+    display: none;
 }

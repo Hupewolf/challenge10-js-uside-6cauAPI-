@@ -27,8 +27,10 @@
     <button onclick="btn4()">Chạy</button>
 
     <h1>Bài 5</h2>
-    <button onclick="loadCountries()" id="btn">Hiển thị danh sách quốc gia</button>
+    <input type="text" id="search" placeholder="Tìm quốc gia..." oninput="handleSearch()"/>
+    <button onclick="loadCountries()" id="btn">Tra cứu</button>
     <div id="countries" class="countries"></div>
+    <div id="pagination"></div>
     
     <h1>Bài 6</h1>
     <button onclick="getIP()">Lấy IP</button>

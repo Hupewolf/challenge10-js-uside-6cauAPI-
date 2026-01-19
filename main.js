@@ -81,38 +81,74 @@ function btn4() {
 }
 
 //bài 5
+// let isOpen = false;
+// function loadCountries() {
+//     const container = document.getElementById("countries");
+//     const btn = document.getElementById("btn");
+
+//     if (isOpen) {
+//         container.innerHTML = "";
+//         btn.textContent = "Hiển thị danh sách quốc gia";
+//         isOpen = false;
+//         return;
+//     }
+
+//     btn.textContent = "X";
+//     container.innerHTML = "Đang tải dữ liệu...";
+
+//     fetch("https://restcountries.com/v3.1/all?fields=name,capital,flags")
+//         .then(res => res.json())
+//         .then(countries => {
+//             const html = countries.map(country => {
+//                 const flag = country.flags?.png || "";
+//                 const name = country.name?.common || "Unknown";
+//                 const capital = country.capital?.[0] || "N/A";
+
+//                 return `
+//                     <div class="country">
+//                         <img src="${flag}" alt="${name}">
+//                         <p>${capital} - ${name}</p>
+//                     </div>
+//                 `;
+//             }).join("");
+
+//             container.innerHTML = html;
+//             isOpen = true;
+//         })
+//         .catch(err => {
+//             container.innerHTML = "Không tải được dữ liệu";
+//             console.error(err);
+//         });
+// }
+
+
+// bài 5 mới
 let isOpen = false;
+let allCountries = [];
+let filteredCountries = [];
+let currentPage = 1;
+const itemsPerPage = 12;
+
 function loadCountries() {
     const container = document.getElementById("countries");
     const btn = document.getElementById("btn");
-
     if (isOpen) {
         container.innerHTML = "";
-        btn.textContent = "Hiển thị danh sách quốc gia";
+        pagination.innerHTML = "";
+        btn.textContent = "Tra cứu";
         isOpen = false;
         return;
     }
-
     btn.textContent = "X";
     container.innerHTML = "Đang tải dữ liệu...";
-
     fetch("https://restcountries.com/v3.1/all?fields=name,capital,flags")
         .then(res => res.json())
-        .then(countries => {
-            const html = countries.map(country => {
-                const flag = country.flags?.png || "";
-                const name = country.name?.common || "Unknown";
-                const capital = country.capital?.[0] || "N/A";
-
-                return `
-                    <div class="country">
-                        <img src="${flag}" alt="${name}">
-                        <p>${capital} - ${name}</p>
-                    </div>
-                `;
-            }).join("");
-
-            container.innerHTML = html;
+        .then(data => {
+            allCountries = data;
+            filteredCountries = data;
+            currentPage = 1;
+            renderCountries();
+            renderPagination();
             isOpen = true;
         })
         .catch(err => {
@@ -120,6 +156,55 @@ function loadCountries() {
             console.error(err);
         });
 }
+function renderCountries() {
+    const container = document.getElementById("countries");
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageData = filteredCountries.slice(start, end);
+    container.innerHTML = pageData.map(country => {
+        const flag = country.flags?.png || "";
+        const name = country.name?.common || "Unknown";
+        const capital = country.capital?.[0] || "N/A";
+        return `
+            <div class="country">
+                <img src="${flag}" alt="${name}">
+                <p>${capital} - ${name}</p>
+            </div>
+        `;
+    }).join("");
+}
+
+function handleSearch() {
+    const keyword = document.getElementById("search").value.toLowerCase();
+    filteredCountries = allCountries.filter(country =>
+        country.name.common.toLowerCase().includes(keyword)
+    );
+    currentPage = 1;
+    renderCountries();
+    renderPagination();
+}
+
+function renderPagination() {
+    const pagination = document.getElementById("pagination");
+    const totalPages = Math.ceil(filteredCountries.length / itemsPerPage);
+    pagination.innerHTML = "";
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === currentPage) {
+            btn.classList.add("active");
+        }
+        btn.onclick = () => {
+            currentPage = i;
+            renderCountries();
+            renderPagination();
+        };
+        pagination.appendChild(btn);
+    }
+}
+
+container.classList.toggle("hidden");
+pagination.classList.toggle("hidden");
 
 //bài 6
 function getIP() {
